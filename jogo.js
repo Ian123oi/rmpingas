@@ -2,11 +2,13 @@ $().ready(function () {
     var canvas = $("#quadro")[0];
     var ctx = canvas.getContext("2d");
     var colisao = false;
-    var cont = 0;
+    var contplayer = 0;
     var gol = 0;
+    var contInimigo = 0;
     var bola = {
-        "vx": -1,
-        "vy": 1,
+    
+        "vx": -2,
+        "vy": 2,
         "x": canvas.width / 2,
         "y": canvas.height / 2,
         "l": 15,
@@ -24,13 +26,12 @@ $().ready(function () {
     var player1 = {
         "vx": 0,
         "vy": 0,
-        "x": 50,
-        "y": 100,
+        "x": 5,
+        "y": canvas.height/2,
         "l": 5,
         "a": 60,
         "cor": "white",
         atualiza: function () {
-            this.x += this.vx;
             this.y += this.vy;
         },
         desenharObjeto: function () {
@@ -42,9 +43,9 @@ $().ready(function () {
     }
 
     var inimigo = {
-        "vy": 1.7,
-        "x": 200,
-        "y": 200,
+        "vy": 3,
+        "x": canvas.width - 10,
+        "y": canvas.height/2,
         "l": 5,
         "a": 60,
         "cor": "white",
@@ -96,17 +97,19 @@ else if (detectaColisao(inimigo, bola)) {
         detectaLimiteObj(inimigo);
         detectaPonto(bola);
         if (gol == 1) {
-            cont++;
+            contplayer++;
             bola.x =  canvas.width / 2;
             bola.y = canvas.height / 2;
             
         } else if (gol == 2) {
-            cont--;
+            contInimigo++;
             bola.x =  canvas.width / 2;
             bola.y = canvas.height / 2;
         }
         detectaLimiteObj(bola);
-        document.getElementById('pontuacao').value = cont;
+        document.getElementById('pontuacao').value = contplayer;
+        document.getElementById('pontuacaoInimigo').value = contInimigo;
+        
 
         inimigo.desenharObjeto();
         player1.desenharObjeto();
@@ -135,19 +138,13 @@ else if (detectaColisao(inimigo, bola)) {
                 obj.y = canvas.height - obj.a;
                 obj.vy = -obj.vy;
             }
-            if (obj.x<0) {
-                obj.y = 0;
-                obj.vy = -obj.vy;
-            }
-            if (obj.y + obj.a> canvas.height) {
-                obj.y = canvas.height - obj.a;
-                obj.vy = -obj.vy;
-            }
+            
+            
         
     } function detectaPonto(obj) {
             if (obj.x<0) {
                 gol = 2;
-            } else if ( obj.x>300) {
+            } else if ( obj.x>canvas.width - obj.l) {
                 gol = 1;
             } else {
                 gol = 0;
@@ -156,10 +153,10 @@ else if (detectaColisao(inimigo, bola)) {
 desenharTela();
     $(window).keydown(function (event) {
         if (event.which == 87) { //cima
-            player1.vy = -2;
+            player1.vy = -3;
         }
         if (event.which == 83) { //baixo
-            player1.vy = 2;
+            player1.vy = 3;
             
         }
     });

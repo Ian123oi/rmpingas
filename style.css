@@ -1,4 +1,21 @@
 #quadro{
   border: 1px solid #000;
   background: black;
+
+ 
+}
+div {
+  
+  justify-content: center;
+  position: absolute;
+  top: 32%;
+  left: 37%;
+  
+
+
+}
+body {
+  background-image: url("https://media.istockphoto.com/id/502189498/pt/foto/bola-e-o-taco-de-t%C3%A9nis-de-mesa.jpg?s=612x612&w=0&k=20&c=8WjWL4RNEZ3AsjVXdxJ4AS9MBqNDqZ9SsKUF2QmVEsc=");
+  background-repeat: no-repeat;
+  background-size: 100%;
 }

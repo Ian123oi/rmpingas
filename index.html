@@ -3,15 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RM - Jogo 2D - Snake</title>
+    <title>Pingas</title>
     <script src="https://code.jquery.com/jquery-3.7.1.slim.js" integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-    <canvas id="quadro" width="300" height=300></canvas>
+    <div>
+    <canvas id="quadro" width="400" height=300></canvas>
     <script src="jogo.js"></script> 
     <br>
-    <label> PONTOS: </label>
+    
+    <label> PONTOS player: </label>
     <input type="number" name="pontuacao" id="pontuacao" readonly value="0">
+    <label> Pontos Inimigo: </label>
+    <input type="number" name="pontuacao" id="pontuacaoInimigo" readonly value="0">
+        </div>
 </body>
 </html>
