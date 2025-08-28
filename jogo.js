@@ -2,10 +2,11 @@ $().ready(function () {
     var canvas = $("#quadro")[0];
     var ctx = canvas.getContext("2d");
     var colisao = false;
-    var gol = false;
+    var cont = 0;
+    var gol = 0;
     var bola = {
         "vx": -1,
-        "vy": 0,
+        "vy": 1,
         "x": canvas.width / 2,
         "y": canvas.height / 2,
         "l": 15,
@@ -25,8 +26,8 @@ $().ready(function () {
         "vy": 0,
         "x": 50,
         "y": 100,
-        "l": 15,
-        "a": 80,
+        "l": 5,
+        "a": 60,
         "cor": "white",
         atualiza: function () {
             this.x += this.vx;
@@ -35,33 +36,26 @@ $().ready(function () {
         desenharObjeto: function () {
             ctx.fillStyle = this.cor;
             ctx.fillRect(this.x, this.y, this.l, this.a);
-            if (colisao) {
-            bola.vx = -bola.vx;
-            console.log("hello world!");
+            
         }
-        },
         
     }
 
     var inimigo = {
-        "vy": 2,
+        "vy": 1.7,
         "x": 200,
         "y": 200,
-        "l": 15,
-        "a": 80,
+        "l": 5,
+        "a": 60,
         "cor": "white",
         atualiza: function () {
-            this.x += this.vx;
             this.y += this.vy;
         },
         desenharObjeto: function () {
             ctx.fillStyle = this.cor;
             ctx.fillRect(this.x, this.y, this.l, this.a);
-            if (colisao) {
-            bola.vx = -bola.vx;
-            console.log("hello world!");
+           
         }
-        },
         
     }
 
@@ -71,30 +65,52 @@ $().ready(function () {
         var top2 = o2.y;
         var esq1 = o1.x;
         var esq2 = o2.x;
-        var dir1 = o1.x + o1.a;
-        var dir2 = o2.x + o2.a;
-        var base1 = o1.y + o1.l;
-        var base2 = o2.y + o2.l;
-        if (base1 > top2 && dir1 > esq2 && base2 > top1 && dir2 > esq1) {
-            colisao = true;
-        }
-        else {
-            colisao = false;
-        }
+        var dir1 = o1.x + o1.l;
+        var dir2 = o2.x + o2.l;
+        var base1 = o1.y + o1.a;
+        var base2 = o2.y + o2.a;
+        return (base1 > top2 && dir1 > esq2 && base2 > top1 && dir2 > esq1);
+           
     }
     function desenharTela() {
         apagarTela();
-        //obj.atualiza();
+        
         player1.atualiza();
         bola.atualiza();
         inimigo.atualiza();
-        detectaColisao(player1, bola);
+        
+       if (detectaColisao(player1, bola)) {
+    bola.vx *= -1;
+    bola.x = player1.x + player1.l; 
+    console.log("colidiu com player1");
+}
+
+
+else if (detectaColisao(inimigo, bola)) {
+    bola.vx *= -1;
+    bola.x = inimigo.x - bola.l; 
+    console.log("colidiu com inimigo");
+}
+        
         detectaLimitePlayer(player1);
         detectaLimiteObj(inimigo);
+        detectaPonto(bola);
+        if (gol == 1) {
+            cont++;
+            bola.x =  canvas.width / 2;
+            bola.y = canvas.height / 2;
+            
+        } else if (gol == 2) {
+            cont--;
+            bola.x =  canvas.width / 2;
+            bola.y = canvas.height / 2;
+        }
+        detectaLimiteObj(bola);
+        document.getElementById('pontuacao').value = cont;
+
+        inimigo.desenharObjeto();
         player1.desenharObjeto();
         bola.desenharObjeto();
-        inimigo.desenharObjeto();
-        
 
         requestAnimationFrame(desenharTela);
     }
@@ -127,8 +143,16 @@ $().ready(function () {
                 obj.y = canvas.height - obj.a;
                 obj.vy = -obj.vy;
             }
-
-    } 
+        
+    } function detectaPonto(obj) {
+            if (obj.x<0) {
+                gol = 2;
+            } else if ( obj.x>300) {
+                gol = 1;
+            } else {
+                gol = 0;
+            }
+        }
 desenharTela();
     $(window).keydown(function (event) {
         if (event.which == 87) { //cima
@@ -139,8 +163,10 @@ desenharTela();
             
         }
     });
-    
+        
 }); 
+
+    
 
 
     
